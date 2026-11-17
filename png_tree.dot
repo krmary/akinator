@@ -1,0 +1,16 @@
+digraph G{
+edge[color="#8e1732"]
+{rank = 0; "001F2D90" [shape=Mrecord, style="filled",fillcolor="#bc614e", color="#0035d6", label= "{node 001F2D90 | parent = 00000000 | DATA = 50| {left 001F2DA8 | right 001F2DF0}}"]};
+"001F2D90"->"001F2DA8"
+{rank = 1; "001F2DA8" [shape=Mrecord, style="filled",fillcolor="#4a22719e", color="#0035d6", label= "{node 001F2DA8 | parent = 001F2D90 | DATA = 20| {left 001F2DC0 | right 001F2DD8}}"]};
+"001F2DA8"->"001F2DC0"
+{rank = 2; "001F2DC0" [shape=Mrecord, style="filled",fillcolor="#6bb092d6", color="#0035d6", label= "{node 001F2DC0 | parent = 001F2DA8 | DATA = 10| {left 00000000 | right 00000000}}"]};
+"001F2DA8"->"001F2DD8"
+{rank = 2; "001F2DD8" [shape=Mrecord, style="filled",fillcolor="#6bb092d6", color="#0035d6", label= "{node 001F2DD8 | parent = 001F2DA8 | DATA = 30| {left 00000000 | right 00000000}}"]};
+"001F2D90"->"001F2DF0"
+{rank = 1; "001F2DF0" [shape=Mrecord, style="filled",fillcolor="#4a22719e", color="#0035d6", label= "{node 001F2DF0 | parent = 001F2D90 | DATA = 60| {left 001F2E08 | right 001F2E20}}"]};
+"001F2DF0"->"001F2E08"
+{rank = 2; "001F2E08" [shape=Mrecord, style="filled",fillcolor="#d05af67e", color="#0035d6", label= "{node 001F2E08 | parent = 001F2DF0 | DATA = 52| {left 00000000 | right 00000000}}"]};
+"001F2DF0"->"001F2E20"
+{rank = 2; "001F2E20" [shape=Mrecord, style="filled",fillcolor="#d05af67e", color="#0035d6", label= "{node 001F2E20 | parent = 001F2DF0 | DATA = 67| {left 00000000 | right 00000000}}"]};
+}

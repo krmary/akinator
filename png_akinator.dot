@@ -1,0 +1,8 @@
+digraph G{
+edge[color="#8e1732"]
+{rank = 0; "00CB1870" [shape=Mrecord, style="filled",fillcolor="#bc614e", color="#0035d6", label= "{ Eto chelovek?}"]};
+"00CB1870"->"00CB1888"[label = "DA"];
+{rank = 1; "00CB1888" [shape=Mrecord, style="filled",fillcolor="#59c3defe", color="#0035d6", label= "{masha}"]};
+"00CB1870"->"00CB18A0"[label = "NET"];
+{rank = 1; "00CB18A0" [shape=Mrecord, style="filled",fillcolor="#59c3defe", color="#0035d6", label= "{ poltorashka}"]};
+}
