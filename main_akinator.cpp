@@ -1,58 +1,5 @@
-#include <stdio.h>
-#include "assert_my.h"
-#include <stdlib.h>
-#include <process.h>
-#include <stdint.h>
-#include <string.h>
-
-typedef char* elem_t;
-
-#define MAX_STR_SIZE 32
-#define TXT_FILE_READ "akinator1.txt"
-#define PNG_FILE "png_akinator.png"
-#define DOT_FILE "png_akinator.dot"
-
-//глобальная переменная
-int num_picture = 0;
-
-struct Node_t
-{
-    elem_t data;
-    Node_t* left;
-    Node_t* right;
-    Node_t* parent;
-};
-
-enum side_t {
-    LEFT  = 0,
-    RIGHT = 1,
-    ERROR = 2
-};
-
-void DumpNode   (FILE* fp, Node_t* node, int number);
-void DumpPngRec (FILE* fp, Node_t* head_node, int i);
-void PngFile    (Node_t* head_node);
-void TreeDump   (Node_t* first_node);
-
-Node_t* CreateNode   (elem_t in_data, Node_t* p_parent, side_t side_elem);
-void    DestroyNode  (Node_t* node);
-void    LinkRight    (Node_t* node, Node_t* p_parent);
-void    LinkLeft     (Node_t* node, Node_t* p_parent);
-Node_t* ReadTree     (const char* file_name);
-Node_t* ReadNode     (FILE* fp, Node_t* p_parent);
-side_t  ChooseSide   (Node_t* p_parent);
-void    PrintTree    (const char* file_name, Node_t* head_node);
-void    PrintNodePre (FILE* fp, Node_t* node);
-
-void GuessPerson (Node_t* head_note);
-
-int main(void) {
-    Node_t* node1 = ReadTree(TXT_FILE_READ);
-    TreeDump(node1);
-
-    GuessPerson(node1);
-
-    DestroyNode(node1);
+int main(int argc, char** argv) {
+    AkinatorGame(argv[1]);
     return 0;
 }
 
@@ -60,8 +7,8 @@ void DumpNode (FILE* fp, Node_t* node, int number) {
     assert_my(fp, );
     assert_my(node, );
 
-    fprintf(fp, "{rank = %d; \"%p\" [shape=Mrecord, style=\"filled\",fillcolor=\"#%x\", color=\"#0035d6\", label= \"{%s}\"]};\n",\
-            number, node, (uintptr_t)node->parent*23456781 + 12345678, node->data);
+    fprintf(fp, "{rank = %d; \"%p\" [shape=Mrecord, style=\"filled\",fillcolor=\"#%x\", color=\"#35178e\", label= \"{%s}\"]};\n",\
+            number, node, (uintptr_t)node->parent*23456781 + 12345699, node->data);
 }
 
 void DumpPngRec (FILE* fp, Node_t* head_node, int i) {
@@ -106,7 +53,7 @@ void TreeDump (Node_t* first_node) {
     num_picture += 1;
 
     int result = system(system_str);
-    if (result != 0) printf("Error: Graphviz can't create png file.\n");
+    if (result != 0) printf(RED "Error: Graphviz can't create png file.\n" RESET);
     return;
 }
 
@@ -114,7 +61,9 @@ Node_t* CreateNode (elem_t in_data, Node_t* p_parent, side_t side_elem) {
     Node_t* node = (Node_t*)calloc(1, sizeof(Node_t));
     assert_my(node, NULL);
 
-    node->data = in_data;
+    node->data = (elem_t)calloc(MAX_STR_SIZE, sizeof(char));
+    assert_my(node->data, NULL);
+    strcpy(node->data, in_data);
 
     if (p_parent) {
         if (side_elem == RIGHT) LinkRight(node, p_parent);
@@ -169,7 +118,7 @@ Node_t* ReadTree (const char* file_name) {
 
     Node_t* head_node = 0;
     if (fgetc(fp) == '(') head_node = ReadNode(fp, NULL);
-    else printf("error: no head node in txt file\n");
+    else printf(RED "error: no head node in txt file\n" RESET);
 
     fclose(fp);
     return head_node;
@@ -178,22 +127,27 @@ Node_t* ReadTree (const char* file_name) {
 Node_t* ReadNode (FILE* fp, Node_t* p_parent) {
     assert_my(fp, NULL);
 
-    elem_t data = (elem_t)calloc(MAX_STR_SIZE, MAX_STR_SIZE*sizeof(char));
-    if (fscanf(fp, "%[^()]", data) == 0) return NULL;
+    elem_t data = (elem_t)calloc(MAX_STR_SIZE, sizeof(char));
+    assert_my(data, NULL);
+
+    if (fscanf(fp, " %[^()]", data) == 0) return NULL;
 
     side_t side = ChooseSide(p_parent);
     Node_t* node = CreateNode(data, p_parent, side);
 
-    char ch = fgetc(fp);
+    int ch = fgetc(fp);
     if (ch == '(') {
+        ungetc(ch, fp);
         while ((ch = fgetc(fp)) != ')') {
             if (ch == EOF) return NULL;
             if (!ReadNode(fp, node)) return NULL;
         }
     }
+    free(data);
+
     if (ch == ')') return node;
 
-    printf("error: can't create node\n");
+    printf(RED "error: can't create node\n" RESET);
     return NULL;
 }
 
@@ -234,19 +188,84 @@ void PrintNodePre (FILE* fp, Node_t* node) {
     return;
 }
 
-void GuessPerson (Node_t* head_note) {
-    assert_my(head_note, );
+void GuessPerson (Node_t* head_node, mode__t mode) {
+    assert_my(head_node, );
 
     char answer[5] = {0};
 
-    while (head_note->right && head_note->left) {
-        printf("%s", head_note->data);
-        scanf("%s", answer);
+    while (head_node->right && head_node->left) {
+        printf(YELLOW "%s\n" RESET, head_node->data);
+        Scanf_str(4, answer);
 
-        if (!strcmp(answer, "da")) head_note = head_note->left;
-        else if (!strcmp(answer, "net")) head_note = head_note->right;
+        if (!strcmp(answer, "da")) head_node = head_node->left;
+        else if (!strcmp(answer, "net")) head_node = head_node->right;
+        else printf(RED "error\n" RESET);
     }
 
-    printf("%s", head_note->data);
+    if (mode == CH_AND_ADD) {
+        printf(YELLOW "%s?(da/net)\n" RESET, head_node->data);
+        scanf("%s", answer);
+
+        if (!strcmp(answer, "da")) return;
+        if (!strcmp(answer, "net")) AddPerson(head_node);
+        else printf(RED "error\n" RESET);
+        return;
+
+    } else printf(YELLOW "%s\n" RESET, head_node->data);
+}
+
+void AddPerson (Node_t* node) {
+    assert_my(node, );
+
+    printf(YELLOW "A kto eto togda ?\n" RESET);
+    char* new_person = (char*)calloc(MAX_STR_SIZE, sizeof(char));
+    assert_my(new_person, );
+
+    Scanf_str(63, new_person);
+    printf(YELLOW "Chem %s otlichaetsya ot %s?\n" RESET, new_person, node->data);
+
+    elem_t new_characteristic = (elem_t)calloc(MAX_STR_SIZE, sizeof(char));
+    assert_my(new_characteristic, );
+
+    Scanf_str(62, new_characteristic);
+    CreateNode(new_person, node, LEFT);
+    CreateNode(node->data, node, RIGHT);
+
+    strcpy(node->data, strcat(new_characteristic, "?"));
+
+    free(new_characteristic);
+    free(new_person);
+    return;
+}
+
+void ChooseWhatToDo (Node_t* node) {
+    printf(CYAN "Cho vi hotite delat?\nugadivat:         \"choose\"\nadd person:       \"add\"\nposmotret derevo: \"dump\"\n" RESET);
+
+    char answer[10] = {0};
+    Scanf_str(9, answer);
+
+    while (strcmp(answer, "stop")) {
+        if (!strcmp(answer, "stop")) break;
+
+        if (!strcmp(answer, "choose")) GuessPerson(node, CHOOSE);
+        else if (!strcmp(answer, "add")) GuessPerson(node, CH_AND_ADD);
+        else if (!strcmp(answer, "dump")) TreeDump(node);
+        else printf(RED "error, try again\n" RESET);
+
+        printf(CYAN "Chto dalshe?(\"stop\" dlya konca): " RESET);
+        Scanf_str(9, answer);
+    }
+    printf(MAGENTA "Goodbye!\n" RESET);
+}
+
+void AkinatorGame (char* file_name) {
+    assert_my(file_name, );
+
+    Node_t* node1 = ReadTree(file_name);
+
+    ChooseWhatToDo(node1);
+
+    PrintTree(file_name, node1);
+    DestroyNode(node1);
     return;
 }

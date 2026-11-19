@@ -1,8 +1,20 @@
 digraph G{
 edge[color="#8e1732"]
-{rank = 0; "00CB1870" [shape=Mrecord, style="filled",fillcolor="#bc614e", color="#0035d6", label= "{ Eto chelovek?}"]};
-"00CB1870"->"00CB1888"[label = "DA"];
-{rank = 1; "00CB1888" [shape=Mrecord, style="filled",fillcolor="#59c3defe", color="#0035d6", label= "{masha}"]};
-"00CB1870"->"00CB18A0"[label = "NET"];
-{rank = 1; "00CB18A0" [shape=Mrecord, style="filled",fillcolor="#59c3defe", color="#0035d6", label= "{ poltorashka}"]};
+{rank = 0; "00C914B0" [shape=Mrecord, style="filled",fillcolor="#bc6163", color="#35178e", label= "{Eto chelovek?}"]};
+"00C914B0"->"00C91558"[label = "DA"];
+{rank = 1; "00C91558" [shape=Mrecord, style="filled",fillcolor="#4374ae53", color="#35178e", label= "{Eto prepodavatel'?}"]};
+"00C91558"->"00C91600"[label = "DA"];
+{rank = 2; "00C91600" [shape=Mrecord, style="filled",fillcolor="#2e5796db", color="#35178e", label= "{Vedet physics?}"]};
+"00C91600"->"00C916A8"[label = "DA"];
+{rank = 3; "00C916A8" [shape=Mrecord, style="filled",fillcolor="#193a7f63", color="#35178e", label= "{Ovchinkin}"]};
+"00C91600"->"00C91708"[label = "NET"];
+{rank = 3; "00C91708" [shape=Mrecord, style="filled",fillcolor="#193a7f63", color="#35178e", label= "{Semenarist?}"]};
+"00C91708"->"00C917B0"[label = "DA"];
+{rank = 4; "00C917B0" [shape=Mrecord, style="filled",fillcolor="#8a55eccb", color="#35178e", label= "{Umnov }"]};
+"00C91708"->"00C91810"[label = "NET"];
+{rank = 4; "00C91810" [shape=Mrecord, style="filled",fillcolor="#8a55eccb", color="#35178e", label= "{Znamenskaya}"]};
+"00C91558"->"00C91660"[label = "NET"];
+{rank = 2; "00C91660" [shape=Mrecord, style="filled",fillcolor="#2e5796db", color="#35178e", label= "{masha}"]};
+"00C914B0"->"00C91678"[label = "NET"];
+{rank = 1; "00C91678" [shape=Mrecord, style="filled",fillcolor="#4374ae53", color="#35178e", label= "{poltorashka}"]};
 }
